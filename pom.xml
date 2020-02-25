@@ -115,7 +115,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.1</version>
+				<version>3.2.2</version>
 				<executions>
 					<execution>
 						<goals>
@@ -123,6 +123,7 @@
 						</goals>
 						<phase>package</phase>
 						<configuration>
+							<finalName>ip-geolocator-1.0-jar-with-dependencies</finalName>
 							<transformers>
 								<transformer
 								implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
