@@ -60,6 +60,7 @@ public class GeoLocator {
         return GSON.fromJson(s, GeoLocation.class);
     }
 
+    // CHECKSTYLE:OFF: MissingJavadocMethod
     public static void main(String[] args) throws IOException {
         try {
             String arg = args.length > 0 ? args[0] : null;
@@ -68,5 +69,5 @@ public class GeoLocator {
             System.err.println(e.getMessage());
         }
     }
-
+    // CHECKSTYLE:ON
 }
