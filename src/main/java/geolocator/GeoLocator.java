@@ -9,6 +9,8 @@ import com.google.gson.Gson;
 import com.google.common.net.UrlEscapers;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class for obtaining geolocation information about an IP address or host
@@ -24,6 +26,8 @@ public class GeoLocator {
 
     private static Gson GSON = new Gson();
 
+    private static final Logger logger = LoggerFactory.getLogger(GeoLocator.class);
+
     /**
      * Creates a <code>GeoLocator</code> object.
      */
@@ -36,6 +40,7 @@ public class GeoLocator {
      * @throws IOException if any I/O error occurs
      */
     public GeoLocation getGeoLocation() throws IOException {
+        logger.info("getGeoLocation called with no argument.");
         return getGeoLocation(null);
     }
 
@@ -49,25 +54,35 @@ public class GeoLocator {
      * @throws IOException if any I/O error occurs
      */
     public GeoLocation getGeoLocation(String ipAddrOrHost) throws IOException {
+        logger.info("getGeoLocation called with a string ipAddrOrHost");
         URL url;
         if (ipAddrOrHost != null) {
+            logger.debug("ipAddrOrHost is not null");
             ipAddrOrHost = UrlEscapers.urlPathSegmentEscaper().escape(ipAddrOrHost);
             url = new URL(GEOLOCATOR_SERVICE_URI + ipAddrOrHost);
         } else {
+            logger.debug("ipAddrOrHost is null");
             url = new URL(GEOLOCATOR_SERVICE_URI);
         }
+        logger.info("Retrieving data from a URL");
+        logger.debug("URL: {}", url);
         String s = IOUtils.toString(url, "UTF-8");
+        logger.debug("Data: {}", s);
         return GSON.fromJson(s, GeoLocation.class);
     }
 
     // CHECKSTYLE:OFF: MissingJavadocMethod
     public static void main(String[] args) throws IOException {
+        logger.info("main start");
         try {
             String arg = args.length > 0 ? args[0] : null;
+            logger.debug("Input arg: {}", arg);
             System.out.println(new GeoLocator().getGeoLocation(arg));
         } catch (IOException e) {
+            logger.error("IOException");
             System.err.println(e.getMessage());
         }
+        logger.info("main end");
     }
     // CHECKSTYLE:ON
 }
